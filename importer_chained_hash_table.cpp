@@ -256,7 +256,7 @@ int main() {
     DoubleNode<string>,
     DoubleList<DoubleNode<string>, string>
   >(str_writer);
-  // todo make single metrics
+  // writer
   timer->set_sooner(time(NULL));
   importer->import(files, table, file_read);
   timer->set_later(time(NULL));

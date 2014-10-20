@@ -24,6 +24,7 @@
 #include "adapter_metrics_table.h"
 #include "metrics.h"
 #include "timer.h"
+#include "writer.h"
 
 using namespace std;
 
@@ -33,7 +34,7 @@ int main() {
   DoubleList<DoubleNode<string>, string> * results = new DoubleList<DoubleNode<string>, string>();
   Tokenizer * tokenizer = new Tokenizer();
   // tokenizer
-  CstringWrapper * str = new CstringWrapper(), * str_adapter = new CstringWrapper(), * str_timer = new CstringWrapper();
+  CstringWrapper * str = new CstringWrapper(), * str_adapter = new CstringWrapper(), * str_timer = new CstringWrapper(), * str_writer = new CstringWrapper();
   // str for c strings
   TokenizerList<
     string,
@@ -308,16 +309,20 @@ int main() {
     // adapter for index (table here)
   >(adapter);
   // get metrics
-  results->insert_right("title", "dataset");
-  results->insert_right("title", "indexing(seconds)");
-  results->insert_right("title", "nodes");
-  results->insert_right("title", "edges");
-  results->insert_right("title", "density");
-  results->insert_right("title", "average degree");
-  results->insert_right("title", "diameter");
-  results->insert_right("title", "average path length");
-  results->insert_right("title", "bfs(seconds)");
-  results->insert_right("end", "end");
+  Writer<
+    ofstream,
+    string,
+    CstringWrapper,
+    DoubleNode<string>,
+    DoubleList<DoubleNode<string>, string>
+  > * writer = new Writer<
+    ofstream,
+    string,
+    CstringWrapper,
+    DoubleNode<string>,
+    DoubleList<DoubleNode<string>, string>
+  >(str_writer);
+  // writer
   timer->set_sooner(time(NULL));
   importer->import(files, table, file_read);
   timer->set_later(time(NULL));
@@ -333,11 +338,7 @@ int main() {
   timer->set_later(time(NULL));
   timer->set_difference(difftime(timer->get_later(), timer->get_sooner()));
   timer->collect_difference(results);
-  results->insert_right("end", "end");
-  while(results->get_head()) {
-    cout<<results->get_head()->key<<" "<<results->get_head()->value<<endl;
-    results->pop_left();
-  }
+  writer->write("unqlite", results);
   delete results;
   delete tokenizer;
   delete str;
@@ -355,5 +356,7 @@ int main() {
   delete timer;
   delete adapter;
   delete metrics;
+  delete str_writer;
+  delete writer;
   return 0;
 }
