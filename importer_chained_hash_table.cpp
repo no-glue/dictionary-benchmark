@@ -17,13 +17,14 @@
 #include "adapter_metrics_table.h"
 #include "metrics.h"
 #include "timer.h"
+#include "writer.h"
 
 using namespace std;
 
 int main() {
   string line;
   getline(cin, line);
-  CstringWrapper * str = new CstringWrapper(), * str_timer = new CstringWrapper();
+  CstringWrapper * str = new CstringWrapper(), * str_timer = new CstringWrapper(), * str_writer = new CstringWrapper();
   // get str
   DoubleList<DoubleNode<string>, string> * results = new DoubleList<DoubleNode<string>, string>;
   // get results
@@ -242,23 +243,26 @@ int main() {
     // adapter for index (table here)
   >(adapter);
   // get metrics
+  Writer<
+    ofstream,
+    string,
+    CstringWrapper,
+    DoubleNode<string>,
+    DoubleList<DoubleNode<string>, string>
+  > * writer = new Writer<
+    ofstream,
+    string,
+    CstringWrapper,
+    DoubleNode<string>,
+    DoubleList<DoubleNode<string>, string>
+  >(str_writer);
   // todo make single metrics
-  results->insert_right("title", "indexing(seconds)");
-  results->insert_right("title", "dataset");
-  results->insert_right("title", "nodes");
-  results->insert_right("title", "edges");
-  results->insert_right("title", "density");
-  results->insert_right("title", "average degree");
-  results->insert_right("title", "diameter");
-  results->insert_right("title", "average path length");
-  results->insert_right("title", "bfs(seconds)");
-  results->insert_right("end", "end");
   timer->set_sooner(time(NULL));
   importer->import(files, table, file_read);
   timer->set_later(time(NULL));
   timer->set_difference(difftime(timer->get_later(), timer->get_sooner()));
-  timer->collect_difference(results);
   metrics->collect_dataset();
+  timer->collect_difference(results);
   metrics->collect_nodes();
   metrics->collect_edges();
   metrics->collect_density();
@@ -268,11 +272,7 @@ int main() {
   timer->set_later(time(NULL));
   timer->set_difference(difftime(timer->get_later(), timer->get_sooner()));
   timer->collect_difference(results);
-  results->insert_right("end", "end");
-  while(results->get_head()) {
-    cout<<results->get_head()->key<<" "<<results->get_head()->value<<endl;
-    results->pop_left();
-  }
+  writer->write("chained_hash_table", results);
   delete str;
   delete results;
   delete table_walk;
@@ -288,5 +288,7 @@ int main() {
   delete importer;
   delete adapter;
   delete metrics;
+  delete str_writer;
+  delete writer;
   return 0;
 }

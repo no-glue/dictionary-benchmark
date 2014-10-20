@@ -137,8 +137,8 @@ int main() {
     >
     // adapter for index (table here)
   >(adapter);
-  results->insert_right("title", "indexing(seconds)");
   results->insert_right("title", "dataset");
+  results->insert_right("title", "indexing(seconds)");
   results->insert_right("title", "nodes");
   results->insert_right("title", "edges");
   results->insert_right("title", "density");
@@ -151,8 +151,8 @@ int main() {
   importer->import(files, tree, file_read);
   timer->set_later(time(NULL));
   timer->set_difference(difftime(timer->get_later(), timer->get_sooner()));
-  timer->collect_difference(results);
   metrics->collect_dataset();
+  timer->collect_difference(results);
   metrics->collect_nodes();
   metrics->collect_edges();
   metrics->collect_density();
