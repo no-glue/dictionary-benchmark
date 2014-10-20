@@ -243,8 +243,8 @@ int main() {
   >(adapter);
   // get metrics
   // todo make single metrics
-  results->insert_right("title", "dataset");
   results->insert_right("title", "indexing(seconds)");
+  results->insert_right("title", "dataset");
   results->insert_right("title", "nodes");
   results->insert_right("title", "edges");
   results->insert_right("title", "density");
@@ -253,12 +253,12 @@ int main() {
   results->insert_right("title", "average path length");
   results->insert_right("title", "bfs(seconds)");
   results->insert_right("end", "end");
-  metrics->collect_dataset();
   timer->set_sooner(time(NULL));
   importer->import(files, table, file_read);
   timer->set_later(time(NULL));
   timer->set_difference(difftime(timer->get_later(), timer->get_sooner()));
   timer->collect_difference(results);
+  metrics->collect_dataset();
   metrics->collect_nodes();
   metrics->collect_edges();
   metrics->collect_density();
