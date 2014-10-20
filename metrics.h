@@ -2,6 +2,10 @@ template<class Adapter>class Metrics {
 public:
     Metrics() {}
     Metrics(Adapter * & adapter): adapter(adapter) {}
+    void collect_dataset() {
+        // add dataset to results
+        collect_dataset(adapter);
+    }
     void collect_nodes() {
         // add nodes to results
         collect_nodes(adapter);
@@ -40,6 +44,10 @@ public:
     }
 private:
     Adapter * adapter;
+    void collect_dataset(Adapter * & adapter) {
+        // add dataset to results
+        adapter->collect_dataset();
+    }
     void collect_nodes(Adapter * & adapter) {
         // add nodes to results
         adapter->collect_nodes();
