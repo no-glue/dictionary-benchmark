@@ -137,6 +137,7 @@ int main() {
     >
     // adapter for index (table here)
   >(adapter);
+  results->insert_right("title", "dataset");
   results->insert_right("title", "indexing(seconds)");
   results->insert_right("title", "nodes");
   results->insert_right("title", "edges");
@@ -146,6 +147,7 @@ int main() {
   results->insert_right("title", "average path length");
   results->insert_right("title", "bfs(seconds)");
   results->insert_right("end", "end");
+  metrics->collect_dataset();
   timer->set_sooner(time(NULL));
   importer->import(files, tree, file_read);
   timer->set_later(time(NULL));

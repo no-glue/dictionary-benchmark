@@ -3,6 +3,10 @@ template<typename Type, typename Qnode, typename Qdepth, class Wrapper, class Li
 public:
   AdapterMetricsAaTree() {}
   AdapterMetricsAaTree(Wrapper * & wrapper, List * & results, Tree * & tree):wrapper(wrapper), results(results), tree(tree) {}
+  void collect_dataset() {
+    // add dataset to results
+    collect_dataset(wrapper, buffer, results, tree);
+  }
   void collect_nodes() {
     // add number of nodes to results
     collect_nodes(wrapper, buffer, results, tree);
@@ -44,6 +48,12 @@ private:
   List * results;
   Tree * tree;
   char buffer[BUFFER_SIZE];
+  void collect_dataset(Wrapper * & wrapper, char * buffer, List * & results, Tree * & tree) {
+    // add dataset to results
+    wrapper->clear(buffer, BUFFER_SIZE);
+    wrapper->copy(buffer, tree->find("dataset")->value[0].c_str());
+    results->insert_right("dataset", buffer);
+  }
   void collect_nodes(Wrapper * & wrapper, char * buffer, List * & results, Tree * & tree) {
     // add number of nodes to results
     wrapper->clear(buffer, BUFFER_SIZE);
