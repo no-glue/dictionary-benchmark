@@ -23,6 +23,7 @@
 #include "importer.h"
 #include "adapter_metrics_table.h"
 #include "metrics.h"
+#include "timer.h"
 
 using namespace std;
 
@@ -32,7 +33,7 @@ int main() {
   DoubleList<DoubleNode<string>, string> * results = new DoubleList<DoubleNode<string>, string>();
   Tokenizer * tokenizer = new Tokenizer();
   // tokenizer
-  CstringWrapper * str = new CstringWrapper(), * str_adapter = new CstringWrapper();
+  CstringWrapper * str = new CstringWrapper(), * str_adapter = new CstringWrapper(), * str_timer = new CstringWrapper();
   // str for c strings
   TokenizerList<
     string,
@@ -146,6 +147,16 @@ int main() {
       string, 
       ifstream>();
   // get file reader
+  Timer<
+    time_t,
+    CstringWrapper,
+    DoubleList<DoubleNode<string>, string>
+  > * timer = new Timer<
+    time_t,
+    CstringWrapper,
+    DoubleList<DoubleNode<string>, string>
+  >(str_timer);
+  // timer
   AdapterMetricsTable<
     string,
     // keys and values simple type
@@ -297,18 +308,30 @@ int main() {
     // adapter for index (table here)
   >(adapter);
   // get metrics
-  time_t now = time(NULL), then;
+  results->insert_right("title", "indexing(seconds)");
+  results->insert_right("title", "nodes");
+  results->insert_right("title", "edges");
+  results->insert_right("title", "density");
+  results->insert_right("title", "average degree");
+  results->insert_right("title", "diameter");
+  results->insert_right("title", "average path length");
+  results->insert_right("title", "bfs(seconds)");
+  results->insert_right("end", "end");
+  timer->set_sooner(time(NULL));
   importer->import(files, table, file_read);
-  then = time(NULL);
-  cout<<"indexing time "<<difftime(then, now)<<" seconds"<<endl;
+  timer->set_later(time(NULL));
+  timer->set_difference(difftime(timer->get_later(), timer->get_sooner()));
+  timer->collect_difference(results);
   metrics->collect_nodes();
   metrics->collect_edges();
   metrics->collect_density();
   metrics->collect_average_degree();
-  now = time(NULL);
+  timer->set_sooner(time(NULL));
   metrics->breadth_first_search();
-  then = time(NULL);
-  cout<<"bfs time "<<difftime(then, now)<<" seconds"<<endl;
+  timer->set_later(time(NULL));
+  timer->set_difference(difftime(timer->get_later(), timer->get_sooner()));
+  timer->collect_difference(results);
+  results->insert_right("end", "end");
   while(results->get_head()) {
     cout<<results->get_head()->key<<" "<<results->get_head()->value<<endl;
     results->pop_left();
@@ -326,6 +349,8 @@ int main() {
   delete files;
   delete file_read;
   delete importer;
+  delete str_timer;
+  delete timer;
   delete adapter;
   delete metrics;
   return 0;
