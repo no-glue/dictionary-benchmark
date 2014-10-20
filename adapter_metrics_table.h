@@ -67,7 +67,7 @@ private:
     double e = (double) find_single_int("edges");
     double n = (double) find_single_int("nodes");
     wrapper->float_to_alpha(buffer, average_degree(e, n));
-    results->insert_right("average_degree", buffer);
+    results->insert_right("average degree", buffer);
   }
   double average_degree(double edges, double nodes) {
     // average degree
