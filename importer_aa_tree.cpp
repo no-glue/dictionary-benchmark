@@ -99,10 +99,12 @@ int main() {
   // importer
   Timer<
     time_t,
+    string,
     CstringWrapper,
     DoubleList<DoubleNode<string>, string>
   > * timer = new Timer<
     time_t,
+    string,
     CstringWrapper,
     DoubleList<DoubleNode<string>, string>
   >(str_timer);
@@ -158,17 +160,17 @@ int main() {
   timer->set_later(time(NULL));
   timer->set_difference(difftime(timer->get_later(), timer->get_sooner()));
   metrics->collect_dataset();
-  timer->collect_difference(results);
-  metrics->collect_nodes();
-  metrics->collect_edges();
-  metrics->collect_density();
-  metrics->collect_average_degree();
+  timer->collect_difference("indexing (sec)", results);
   timer->set_sooner(time(NULL));
   metrics->breadth_first_search();
   timer->set_later(time(NULL));
   timer->set_difference(difftime(timer->get_later(), timer->get_sooner()));
-  timer->collect_difference(results);
-  writer->write("unqlite", results);
+  timer->collect_difference("bfs (sec)", results);
+  metrics->collect_nodes();
+  metrics->collect_edges();
+  metrics->collect_density();
+  metrics->collect_average_degree();
+  writer->write("aa_tree", results);
   delete results;
   delete tree;
   delete adapter;
