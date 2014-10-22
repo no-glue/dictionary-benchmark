@@ -21,7 +21,9 @@ private:
     wrapper->concat(buffer, "_");
     wrapper->concat(buffer, node->value);
     Stream out(buffer, Stream::out);
-    results->pop_left();
+    delete node->value;
+    node->value = new char[BUFFER_SIZE];
+    wrapper->copy(node->value, buffer);
     while((node = results->get_head())) {
       out<<node->key<<"\t"<<node->value<<"\n";
       results->pop_left();
