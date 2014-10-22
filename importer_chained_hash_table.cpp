@@ -278,12 +278,12 @@ int main() {
   timer->set_difference(difftime(timer->get_later(), timer->get_sooner()));
   metrics->collect_dataset();
   status->status(results);
-  timer->collect_difference("indexing (sec)", results);
+  timer->collect_difference("indexing(sec)", results);
   timer->set_sooner(time(NULL));
   metrics->breadth_first_search();
   timer->set_later(time(NULL));
   timer->set_difference(difftime(timer->get_later(), timer->get_sooner()));
-  timer->collect_difference("bfs (sec)", results);
+  timer->collect_difference("bfs(sec)", results);
   metrics->collect_nodes();
   metrics->collect_edges();
   metrics->collect_density();
