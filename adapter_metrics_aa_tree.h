@@ -7,6 +7,10 @@ public:
     // add dataset to results
     collect_dataset(wrapper, buffer, results, tree);
   }
+  void collect_size() {
+    // add dataset size in mb to results
+    collect_size(wrapper, buffer, results, tree);
+  }
   void collect_nodes() {
     // add number of nodes to results
     collect_nodes(wrapper, buffer, results, tree);
@@ -53,6 +57,12 @@ private:
     wrapper->clear(buffer, BUFFER_SIZE);
     wrapper->copy(buffer, tree->find("dataset")->value[0].c_str());
     results->insert_right("dataset", buffer);
+  }
+  void collect_size(Wrapper * & wrapper, char * buffer, List * & results, Tree * & tree) {
+    // add dataset size in mb to results
+    wrapper->clear(buffer, BUFFER_SIZE);
+    wrapper->copy(buffer, tree->find("dataset(mb)")->value[0].c_str());
+    results->insert_right("dataset(mb)", buffer);
   }
   void collect_nodes(Wrapper * & wrapper, char * buffer, List * & results, Tree * & tree) {
     // add number of nodes to results

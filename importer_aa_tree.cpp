@@ -173,6 +173,7 @@ int main() {
   timer->set_later(time(NULL));
   timer->set_difference(difftime(timer->get_later(), timer->get_sooner()));
   metrics->collect_dataset();
+  metrics->collect_size();
   status->status(results);
   timer->collect_difference("indexing(sec)", results);
   timer->set_sooner(time(NULL));

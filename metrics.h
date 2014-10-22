@@ -6,6 +6,10 @@ public:
         // add dataset to results
         collect_dataset(adapter);
     }
+    void collect_size() {
+        // add dataset size in mb to results
+        collect_size(adapter);
+    }
     void collect_nodes() {
         // add nodes to results
         collect_nodes(adapter);
@@ -47,6 +51,10 @@ private:
     void collect_dataset(Adapter * & adapter) {
         // add dataset to results
         adapter->collect_dataset();
+    }
+    void collect_size(Adapter * & adapter) {
+        // add dataset size in mb to results
+        adapter->collect_size();
     }
     void collect_nodes(Adapter * & adapter) {
         // add nodes to results

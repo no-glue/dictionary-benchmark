@@ -5,6 +5,7 @@ public:
   AdapterMetricsTable(Wrapper * & wrapper, Table * & table, TableVisited * & table_visited, List * & results):
     wrapper(wrapper), table(table), table_visited(table_visited), results(results) {}
   void collect_dataset() {insert_results("dataset", table, results);}
+  void collect_size() {insert_results("dataset(mb)", table, results);}
   void collect_density() {
     // add density to results
     collect_density(wrapper, buffer, results);
