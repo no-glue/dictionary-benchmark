@@ -17,6 +17,7 @@
 #include "metrics.h"
 #include "timer.h"
 #include "writer.h"
+#include "status.h"
 
 using namespace std;
 
@@ -39,7 +40,7 @@ int main() {
     string
   >();
   // tree
-  CstringWrapper * wrapper = new CstringWrapper(), * str_timer = new CstringWrapper(), * str_writer = new CstringWrapper();
+  CstringWrapper * wrapper = new CstringWrapper(), * str_timer = new CstringWrapper(), * str_writer = new CstringWrapper(), * str_status = new CstringWrapper();
   // string helper
   AdapterMetricsAaTree<
     string,
@@ -155,11 +156,24 @@ int main() {
     DoubleList<DoubleNode<string>, string>
   >(str_writer);
   // writer
+  Status<
+    string,
+    ifstream,
+    CstringWrapper,
+    DoubleList<DoubleNode<string>, string>
+  > * status = new Status<
+    string,
+    ifstream,
+    CstringWrapper,
+    DoubleList<DoubleNode<string>, string>
+  >(str_status);
+  // process status
   timer->set_sooner(time(NULL));
   importer->import(files, tree, file_read);
   timer->set_later(time(NULL));
   timer->set_difference(difftime(timer->get_later(), timer->get_sooner()));
   metrics->collect_dataset();
+  status->status(results);
   timer->collect_difference("indexing (sec)", results);
   timer->set_sooner(time(NULL));
   metrics->breadth_first_search();
@@ -182,5 +196,7 @@ int main() {
   delete metrics;
   delete str_writer;
   delete writer;
+  delete str_status;
+  delete status;
   return 0;
 }
