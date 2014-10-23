@@ -5,9 +5,9 @@ Included are
 2. [Unqlite](https://github.com/no-glue/unqlite-dictionary)  
 3. [AA tree](https://github.com/no-glue/aa-tree)  
 ## How to run tests with livejournal data set
-cd data/livejournal
-sh get_livejournal.sh
-cd ../..
-sh make.sh
-sh run_livejournal.sh
-sh graphs_livejournal.sh
+cd data/livejournal  
+sh get_livejournal.sh  
+cd ../..  
+sh make.sh  
+sh run_livejournal.sh  
+sh graphs_livejournal.sh  
