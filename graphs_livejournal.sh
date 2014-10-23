@@ -1,1 +1,1 @@
-python graph_bars.py < echo "aa,chained,unqlite VmPeak graph_bars_vmpeak"
+echo "aa,chained,unqlite VmPeak results*livejournal graph_bars_vmpeak" | python graph_bars.py
