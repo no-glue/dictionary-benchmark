@@ -1,0 +1,1 @@
+python graph_bars.py < echo "aa,chained,unqlite VmPeak graph_bars_vmpeak"

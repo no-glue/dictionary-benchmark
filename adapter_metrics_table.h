@@ -69,7 +69,7 @@ private:
     double e = (double) find_single_int("edges");
     double n = (double) find_single_int("nodes");
     wrapper->float_to_alpha(buffer, average_degree(e, n));
-    results->insert_right("average degree", buffer);
+    results->insert_right("average_degree", buffer);
   }
   double average_degree(double edges, double nodes) {
     // average degree
@@ -130,10 +130,10 @@ private:
       node->pop_left();
       depth->pop_left();
     }
-    results->insert_right("network diameter", buffer);
+    results->insert_right("network_diameter", buffer);
     wrapper->clear(buffer, BUFFER_SIZE);
     wrapper->float_to_alpha(buffer, average_path_length);
-    results->insert_right("average path length", buffer);
+    results->insert_right("average_path_length", buffer);
     delete walk;
     delete running;
     delete depth;

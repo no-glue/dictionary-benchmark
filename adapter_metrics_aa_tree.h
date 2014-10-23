@@ -100,7 +100,7 @@ private:
     // add average degree to results
     wrapper->clear(buffer, BUFFER_SIZE);
     wrapper->float_to_alpha(buffer, average_degree(tree));
-    results->insert_right("average degree", buffer);
+    results->insert_right("average_degree", buffer);
   }
   double average_degree(Tree * & tree) {
     // average degree
@@ -149,9 +149,9 @@ private:
     }
     wrapper->clear(buffer, BUFFER_SIZE);
     wrapper->int_to_alpha(buffer, depth_tmp.front());
-    results->insert_right("network diameter", buffer);
+    results->insert_right("network_diameter", buffer);
     wrapper->clear(buffer, BUFFER_SIZE);
     wrapper->float_to_alpha(buffer, average_path_length);
-    results->insert_right("average path length", buffer);
+    results->insert_right("average_path_length", buffer);
   }
 };
