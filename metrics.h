@@ -42,6 +42,10 @@ public:
         // average degree
         return average_degree(adapter);
     }
+    void collect_specific_metric() {
+        // specific metric for data structure e.g. chain length, tree height
+        collect_specific_metric(adapter);
+    }
     void breadth_first_search() {
         // breadth first search
         breadth_first_search(adapter);
@@ -87,6 +91,10 @@ private:
     double average_degree(Adapter * & adapter) {
         // average degree
         return adapter->average_degree();
+    }
+    void collect_specific_metric(Adapter * & adapter) {
+        // specific metric for data structure e.g. chain length, tree height
+        adapter->collect_specific_metric();
     }
     void breadth_first_search(Adapter * & adapter) {
         // breadth first search

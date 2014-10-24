@@ -43,6 +43,10 @@ public:
     // average number of edges for a node
     return average_degree(tree);
   }
+  void collect_specific_metric() {
+    // tree height
+    collect_specific_metric(wrapper, buffer, results, tree); 
+  }
   void breadth_first_search() {
     // breadth first search
     breadth_first_search(wrapper, buffer, results, tree);
@@ -107,6 +111,12 @@ private:
     double e = (double)edges(tree);
     double n = (double)nodes(tree);
     return (2 * e) / n;
+  }
+  void collect_specific_metric(Wrapper * & wrapper, char * buffer, List * & results, Tree * & tree) {
+    // tree height
+    wrapper->clear(buffer, BUFFER_SIZE);
+    wrapper->int_to_alpha(buffer, tree->level());
+    results->insert_right("height", buffer); 
   }
   void breadth_first_search(Wrapper * & wrapper, char * buffer, List * & results, Tree * & tree) {
     // breadth first search

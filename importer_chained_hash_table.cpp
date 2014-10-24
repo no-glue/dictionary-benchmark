@@ -289,6 +289,7 @@ int main() {
   metrics->collect_edges();
   metrics->collect_density();
   metrics->collect_average_degree();
+  metrics->collect_specific_metric();
   writer->write("chained_hash_table", results);
   delete str;
   delete results;

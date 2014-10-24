@@ -22,6 +22,10 @@ public:
     // average degree
     return average_degree((double) edges(), (double) nodes());
   }
+  void collect_specific_metric() {
+    // get longest chain
+    collect_specific_metric(wrapper, table, buffer, results);
+  }
   void collect_nodes() {
     // add number of nodes to results
     insert_results("nodes", table, results);
@@ -74,6 +78,12 @@ private:
   double average_degree(double edges, double nodes) {
     // average degree
     return (2 * edges) / nodes;
+  }
+  void collect_specific_metric(Wrapper * & wrapper, Table * & table, char * buffer, List * & results) {
+    // get longest chain
+    wrapper->clear(buffer, BUFFER_SIZE);
+    wrapper->int_to_alpha(buffer, table->get_longest_chain());
+    results->insert_right("longest_chain", buffer);
   }
   void insert_results(Type key, Table * & table, List * & results) {
     // insert to results

@@ -185,6 +185,7 @@ int main() {
   metrics->collect_edges();
   metrics->collect_density();
   metrics->collect_average_degree();
+  metrics->collect_specific_metric();
   writer->write("aa_tree", results);
   delete results;
   delete tree;
