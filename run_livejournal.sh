@@ -1,3 +1,3 @@
-./importer_chained_hash_table < ../aa-tree/subject_files_test
-./importer_unqlite < ../aa-tree/subject_files_test
-./importer_aa_tree < ../aa-tree/subject_files_test
+./importer_chained_hash_table < ./subject_files_livejournal
+./importer_unqlite < ./subject_files_livejournal
+./importer_aa_tree < ./subject_files_livejournal
