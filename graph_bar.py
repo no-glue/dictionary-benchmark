@@ -40,3 +40,19 @@ class GraphBar(object):
     self.plt.xticks(horizontal + 0.5, horizontal_labels_list, rotation = 0)
     fig = self.plt.gcf()
     fig.savefig(graph_name + ".png", dpi = 100)
+  def draw_vs(self, line):
+    """Draw bar graph"""
+    horizontal_labels, vertical_label, files_in, graph_name, divisor = line.split()
+    horizontal_labels_list = horizontal_labels.split(",")
+    vertical_values_list = []
+    for file in self.importer.files(files_in):
+      for line in self.importer.file_in_lines(open(file)):
+        if vertical_label not in line:
+          continue
+        label, value = line.split()
+        vertical_values_list.append(float(value) / float(divisor))
+    horizontal = self.np.arange(len(horizontal_labels_list))
+    self.plt.bar(horizontal, vertical_values_list)
+    self.plt.xticks(horizontal + 0.5, horizontal_labels_list, rotation = 0)
+    fig = self.plt.gcf()
+    fig.savefig(graph_name + ".png", dpi = 100)
