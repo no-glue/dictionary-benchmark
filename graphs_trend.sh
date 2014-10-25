@@ -1,1 +1,3 @@
-echo "dataset(mb) VmPeak results_aa*,results_chained*,results_unqlite* skitter,livejournal,orkut" | python graph_lines.py
+echo "dataset(mb) VmPeak results_aa*,results_chained*,results_unqlite* skitter,livejournal,orkut graph_trends_vmpeak" | python graph_lines.py
+echo "dataset(mb) indexing(sec) results_aa*,results_chained*,results_unqlite* skitter,livejournal,orkut graph_trends_indexingsec" | python graph_lines.py
+echo "dataset(mb) bfs(sec) results_aa*,results_chained*,results_unqlite* skitter,livejournal,orkut graph_trends_bfsec" | python graph_lines.py

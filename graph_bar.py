@@ -58,8 +58,8 @@ class GraphBar(object):
     fig.savefig(graph_name + ".png", dpi = 100)
   def draw_line(self, line):
     """Draw line graph"""
-    styles = ['r-', 'b-', 'g-']
-    horizontal_label, vertical_label, paths, names = line.split()
+    styles = ['r-', 'g-', 'b-', 'c-', 'm-']
+    horizontal_label, vertical_label, paths, names, graph_name = line.split()
     paths_list = paths.split(",")
     names_list = names.split(",")
     to_read = []
@@ -91,10 +91,10 @@ class GraphBar(object):
           else:
             vertical_values[paths_list[path["group"]]] = [value]
     # read y values (vertical)
-    print horizontal_values
     count = 0
+    fig, subplots = self.plt.subplots()
     for path in vertical_values:
-      print vertical_values[path]
-      self.plt.plot(horizontal_values, vertical_values[path], styles[count])
+      subplots.plot(horizontal_values, vertical_values[path], styles[count % len(styles)], label = path[:-1])
       count += 1
-    self.plt.show()
+    subplots.legend(loc = "upper center")
+    fig.savefig(graph_name + ".png", dpi = 100)
