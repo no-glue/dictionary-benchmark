@@ -98,3 +98,47 @@ class GraphBar(object):
       count += 1
     subplots.legend(loc = "upper center")
     fig.savefig(graph_name + ".png", dpi = 100)
+  def draw_line_vs(self, line):
+    """Draw line graph"""
+    styles = ['r-', 'g-', 'b-', 'c-', 'm-']
+    horizontal_label, vertical_label, paths, names, graph_name = line.split()
+    paths_list = paths.split(",")
+    names_list = names.split(",")
+    to_read = []
+    horizontal_values = []
+    vertical_values = {}
+    count = 0
+    for path in paths_list:
+      for name in names_list:
+        to_read.append({"path": path + name, "group": count})
+      count += 1
+    # find paths
+    count = 0
+    for path in to_read:
+      if count >= len(paths_list): break
+      for file in self.importer.files(path["path"]):
+        for line in self.importer.file_in_lines(open(file)):
+          if horizontal_label not in line: continue
+          this_label, value = line.split()
+          horizontal_values.append(float(value))
+      count += 1
+    # read x values (horizontal)
+    count = 0
+    for path in to_read:
+      for file in self.importer.files(path["path"]):
+        for line in self.importer.file_in_lines(open(file)):
+          if vertical_label not in line: continue
+          this_label, value = line.split()
+          if paths_list[path["group"]] in vertical_values:
+            vertical_values[paths_list[path["group"]]].append(horizontal_values[count % len(horizontal_values)] / float(value))
+          else:
+            vertical_values[paths_list[path["group"]]] = [horizontal_values[count % len(horizontal_values)] / float(value)]
+      count += 1
+    # read y values (vertical)
+    count = 0
+    fig, subplots = self.plt.subplots()
+    for path in vertical_values:
+      subplots.plot(horizontal_values, vertical_values[path], styles[count % len(styles)], label = path[:-1])
+      count += 1
+    subplots.legend(loc = "upper center")
+    fig.savefig(graph_name + ".png", dpi = 100)
