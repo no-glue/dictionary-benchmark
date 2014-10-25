@@ -1,0 +1,1 @@
+echo "dataset(mb) VmPeak results_aa*,results_chained*,results_unqlite* skitter,livejournal,orkut" | python graph_lines.py
