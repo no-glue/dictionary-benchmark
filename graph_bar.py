@@ -93,6 +93,8 @@ class GraphBar(object):
     # read y values (vertical)
     count = 0
     fig, subplots = self.plt.subplots()
+    subplots.set_xlabel(horizontal_label)
+    subplots.set_ylabel(vertical_label)
     for path in vertical_values:
       subplots.plot(horizontal_values, vertical_values[path], styles[count % len(styles)], label = path[:-1])
       count += 1
