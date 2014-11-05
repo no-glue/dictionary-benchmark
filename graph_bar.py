@@ -100,7 +100,7 @@ class GraphBar(object):
       subplots.plot(horizontal_values, vertical_values[path], styles[count % len(styles)], label = path[:-1])
       subplots.plot(horizontal_values, vertical_values[path], markers[count % len(styles)])
       count += 1
-    subplots.legend(loc = "upper left")
+    subplots.legend(loc = "upper center")
     fig.savefig(graph_name + ".png", dpi = 100)
   def draw_line_vs(self, line):
     """Draw line graph"""
