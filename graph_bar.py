@@ -97,7 +97,8 @@ class GraphBar(object):
     subplots.set_xlabel(horizontal_label)
     subplots.set_ylabel(vertical_label)
     for path in vertical_values:
-      subplots.plot(horizontal_values, vertical_values[path], styles[count % len(styles)], horizontal_values, vertical_values[path], markers[count % len(styles)], label = path[:-1])
+      subplots.plot(horizontal_values, vertical_values[path], styles[count % len(styles)], label = path[:-1])
+      subplots.plot(horizontal_values, vertical_values[path], markers[count % len(styles)])
       count += 1
     subplots.legend(loc = "upper left")
     fig.savefig(graph_name + ".png", dpi = 100)
