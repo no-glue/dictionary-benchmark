@@ -1,3 +1,6 @@
 data/skitter/skitter*
 data/livejournal/livejournal*
 data/orkut/orkut*
+*.pyc
+*.png
+results*

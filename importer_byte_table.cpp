@@ -48,33 +48,35 @@ int main() {
   // get file read messages
   Importer<
     GeneratorFile<ifstream, string>, 
-    HelperWrapper<
-      string,
+    ByteTableAsList<
       DoubleList<DoubleNode<string>, string>,
-      Tokenizer,
-      TokenizerList<
-        string,
-        CstringWrapper,
-        DoubleList<DoubleNode<string>, string>,
-        Tokenizer
+      ByteTableToList<
+        Tokenizer, 
+        DoubleList<DoubleNode<string>, 
+        string>, 
+        CstringWrapper
       >,
-      UnqliteWrapper<string>
+      ByteTable<
+        CstringWrapper, 
+        HashDjb2String<string>
+      >
     >, 
     DecoratorFileRead<ostream, string>, 
     string, 
     ifstream> * importer = new Importer<
       GeneratorFile<ifstream, string>, 
-      HelperWrapper<
-        string,
+      ByteTableAsList<
         DoubleList<DoubleNode<string>, string>,
-        Tokenizer,
-        TokenizerList<
-          string,
-          CstringWrapper,
-          DoubleList<DoubleNode<string>, string>,
-          Tokenizer
+        ByteTableToList<
+          Tokenizer, 
+          DoubleList<DoubleNode<string>, 
+          string>, 
+          CstringWrapper
         >,
-        UnqliteWrapper<string>
+        ByteTable<
+          CstringWrapper, 
+          HashDjb2String<string>
+        >
       >, 
       DecoratorFileRead<ostream, string>, 
       string, 
