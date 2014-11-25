@@ -32,8 +32,56 @@ using namespace std;
 int main() {
   string line;
   getline(cin, line);
-  CstringWrapper * str_timer = new CstringWrapper();
+  CstringWrapper * str = new CstringWrapper(), * str_timer = new CstringWrapper(), * str_table_to_list = new CstringWrapper();
+  HashDjb2String<string> * hash = new HashDjb2String<string>();
+  Tokenizer * tokenizer_to_list = new Tokenizer(), * tokenizer_to_list_key = new Tokenizer();
   // str for c strings
+  ByteTable<
+   CstringWrapper,
+   HashDjb2String<string>
+  > * table_base = new ByteTable<
+   CstringWrapper,
+   HashDjb2String<string>
+  >(SIZE / 2, str, hash);
+  // table base
+  ByteTableToList<
+    Tokenizer,
+    DoubleList<DoubleNode<string>, string>,
+    CstringWrapper
+  > * table_to_list = new ByteTableToList<
+    Tokenizer,
+    DoubleList<DoubleNode<string>, string>,
+    CstringWrapper
+  >(tokenizer_to_list, tokenizer_to_list_key, str_table_to_list);
+  // table to list
+  ByteTableAsList<
+    string,
+    DoubleList<DoubleNode<string>, string>,
+    ByteTableToList<
+      Tokenizer, 
+      DoubleList<DoubleNode<string>, 
+      string>, 
+      CstringWrapper
+    >,
+    ByteTable<
+      CstringWrapper, 
+      HashDjb2String<string>
+    >
+  > * table = new ByteTableAsList<
+    string,
+    DoubleList<DoubleNode<string>, string>,
+    ByteTableToList<
+      Tokenizer, 
+      DoubleList<DoubleNode<string>, 
+      string>, 
+      CstringWrapper
+    >,
+    ByteTable<
+      CstringWrapper, 
+      HashDjb2String<string>
+    >
+  >(table_to_list, table_base);
+  // table
   GeneratorFile<
     ifstream, string
   > * files = new GeneratorFile<
@@ -49,6 +97,7 @@ int main() {
   Importer<
     GeneratorFile<ifstream, string>, 
     ByteTableAsList<
+      string,
       DoubleList<DoubleNode<string>, string>,
       ByteTableToList<
         Tokenizer, 
@@ -66,6 +115,7 @@ int main() {
     ifstream> * importer = new Importer<
       GeneratorFile<ifstream, string>, 
       ByteTableAsList<
+        string,
         DoubleList<DoubleNode<string>, string>,
         ByteTableToList<
           Tokenizer, 
@@ -97,6 +147,8 @@ int main() {
   timer->set_sooner(time(NULL));
   importer->import(files, table, file_read);
   timer->set_later(time(NULL));
+  delete str_timer;
+  delete table;
   delete files;
   delete file_read;
   delete importer;
