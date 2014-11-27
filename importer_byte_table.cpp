@@ -147,7 +147,14 @@ int main() {
   timer->set_sooner(time(NULL));
   importer->import(files, table, file_read);
   timer->set_later(time(NULL));
+  delete str;
   delete str_timer;
+  delete str_table_to_list;
+  delete hash;
+  delete tokenizer_to_list;
+  delete tokenizer_to_list_key;
+  delete table_base;
+  delete table_to_list;
   delete table;
   delete files;
   delete file_read;
