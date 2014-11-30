@@ -10,8 +10,7 @@
 #include <math.h>
 #include "byte_table.h"
 #include "filter.h"
-#include "byte_table_to_list.h"
-#include "byte_table_as_list.h"
+#include "byte_table_as_string.h"
 #include "tokenizer.h"
 #include "cstring_wrapper.h"
 #include "double_node.h"
@@ -32,9 +31,8 @@ using namespace std;
 int main() {
   string line;
   getline(cin, line);
-  CstringWrapper * str = new CstringWrapper(), * str_timer = new CstringWrapper(), * str_table_to_list = new CstringWrapper();
+  CstringWrapper * str = new CstringWrapper(), * str_timer = new CstringWrapper();
   HashDjb2String<string> * hash = new HashDjb2String<string>();
-  Tokenizer * tokenizer_to_list = new Tokenizer(), * tokenizer_to_list_key = new Tokenizer();
   // str for c strings
   ByteTable<
    CstringWrapper,
@@ -44,43 +42,19 @@ int main() {
    HashDjb2String<string>
   >(SIZE / 2, str, hash);
   // table base
-  ByteTableToList<
-    Tokenizer,
-    DoubleList<DoubleNode<string>, string>,
-    CstringWrapper
-  > * table_to_list = new ByteTableToList<
-    Tokenizer,
-    DoubleList<DoubleNode<string>, string>,
-    CstringWrapper
-  >(tokenizer_to_list, tokenizer_to_list_key, str_table_to_list);
-  // table to list
-  ByteTableAsList<
+  ByteTableAsString<
     string,
-    DoubleList<DoubleNode<string>, string>,
-    ByteTableToList<
-      Tokenizer, 
-      DoubleList<DoubleNode<string>, 
-      string>, 
-      CstringWrapper
-    >,
     ByteTable<
-      CstringWrapper, 
-      HashDjb2String<string>
+     CstringWrapper,
+     HashDjb2String<string>
     >
-  > * table = new ByteTableAsList<
+  > * table = new ByteTableAsString<
     string,
-    DoubleList<DoubleNode<string>, string>,
-    ByteTableToList<
-      Tokenizer, 
-      DoubleList<DoubleNode<string>, 
-      string>, 
-      CstringWrapper
-    >,
     ByteTable<
-      CstringWrapper, 
-      HashDjb2String<string>
+     CstringWrapper,
+     HashDjb2String<string>
     >
-  >(table_to_list, table_base);
+  >(table_base);
   // table
   GeneratorFile<
     ifstream, string
@@ -95,37 +69,23 @@ int main() {
   >(cout);
   // get file read messages
   Importer<
-    GeneratorFile<ifstream, string>, 
-    ByteTableAsList<
+    GeneratorFile<ifstream, string>,
+    ByteTableAsString<
       string,
-      DoubleList<DoubleNode<string>, string>,
-      ByteTableToList<
-        Tokenizer, 
-        DoubleList<DoubleNode<string>, 
-        string>, 
-        CstringWrapper
-      >,
       ByteTable<
-        CstringWrapper, 
-        HashDjb2String<string>
+       CstringWrapper,
+       HashDjb2String<string>
       >
     >, 
     DecoratorFileRead<ostream, string>, 
     string, 
     ifstream> * importer = new Importer<
       GeneratorFile<ifstream, string>, 
-      ByteTableAsList<
+      ByteTableAsString<
         string,
-        DoubleList<DoubleNode<string>, string>,
-        ByteTableToList<
-          Tokenizer, 
-          DoubleList<DoubleNode<string>, 
-          string>, 
-          CstringWrapper
-        >,
         ByteTable<
-          CstringWrapper, 
-          HashDjb2String<string>
+         CstringWrapper,
+         HashDjb2String<string>
         >
       >, 
       DecoratorFileRead<ostream, string>, 
@@ -149,12 +109,8 @@ int main() {
   timer->set_later(time(NULL));
   delete str;
   delete str_timer;
-  delete str_table_to_list;
   delete hash;
-  delete tokenizer_to_list;
-  delete tokenizer_to_list_key;
   delete table_base;
-  delete table_to_list;
   delete table;
   delete files;
   delete file_read;
