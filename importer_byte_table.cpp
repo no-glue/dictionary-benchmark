@@ -1,5 +1,6 @@
-#define SIZE 2147483648
-#define ARRAY_SIZE 2147483648
+#define SIZE 131072
+#define ARRAY_SIZE 131072
+// todo ... switch ... on load, 80% switch table
 
 #include <string>
 #include <iostream>
