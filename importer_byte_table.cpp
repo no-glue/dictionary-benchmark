@@ -1,4 +1,5 @@
-#define SIZE 4294967295
+#define SIZE 2147483648
+#define ARRAY_SIZE 2147483648
 
 #include <string>
 #include <iostream>
@@ -8,9 +9,10 @@
 #include <cstring>
 #include <time.h>
 #include <math.h>
+#include "byte_array.h"
 #include "byte_table.h"
 #include "filter.h"
-#include "byte_table_as_string.h"
+#include "byte_table_as_list.h"
 #include "tokenizer.h"
 #include "cstring_wrapper.h"
 #include "double_node.h"
@@ -35,25 +37,23 @@ int main() {
   HashDjb2String<string> * hash = new HashDjb2String<string>();
   // str for c strings
   ByteTable<
-   CstringWrapper,
-   HashDjb2String<string>
+    ByteArray,
+    HashDjb2String<string>
   > * table_base = new ByteTable<
-   CstringWrapper,
-   HashDjb2String<string>
-  >(SIZE / 2, str, hash);
+    ByteArray,
+    HashDjb2String<string>
+  >(SIZE, ARRAY_SIZE, hash);
   // table base
-  ByteTableAsString<
+  ByteTableAsList<
     string,
-    ByteTable<
-     CstringWrapper,
-     HashDjb2String<string>
-    >
-  > * table = new ByteTableAsString<
+    DoubleList<DoubleNode<string>, string >,
+    ByteArray,
+    ByteTable<ByteArray, HashDjb2String<string> >
+  > * table = new ByteTableAsList<
     string,
-    ByteTable<
-     CstringWrapper,
-     HashDjb2String<string>
-    >
+    DoubleList<DoubleNode<string>, string >,
+    ByteArray,
+    ByteTable<ByteArray, HashDjb2String<string> >
   >(table_base);
   // table
   GeneratorFile<
@@ -70,24 +70,22 @@ int main() {
   // get file read messages
   Importer<
     GeneratorFile<ifstream, string>,
-    ByteTableAsString<
+    ByteTableAsList<
       string,
-      ByteTable<
-       CstringWrapper,
-       HashDjb2String<string>
-      >
-    >, 
+      DoubleList<DoubleNode<string>, string >,
+      ByteArray,
+      ByteTable<ByteArray, HashDjb2String<string> >
+    >,
     DecoratorFileRead<ostream, string>, 
     string, 
     ifstream> * importer = new Importer<
       GeneratorFile<ifstream, string>, 
-      ByteTableAsString<
+      ByteTableAsList<
         string,
-        ByteTable<
-         CstringWrapper,
-         HashDjb2String<string>
-        >
-      >, 
+        DoubleList<DoubleNode<string>, string >,
+        ByteArray,
+        ByteTable<ByteArray, HashDjb2String<string> >
+      >,
       DecoratorFileRead<ostream, string>, 
       string, 
       ifstream>();
