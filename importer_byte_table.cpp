@@ -251,6 +251,7 @@ int main() {
   timer->set_difference(difftime(timer->get_later(), timer->get_sooner()));
   metrics->collect_dataset();
   metrics->collect_size();
+  timer->collect_difference("indexing(sec)", results);
   metrics->collect_nodes();
   metrics->collect_edges();
   metrics->collect_density();
