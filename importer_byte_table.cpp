@@ -186,9 +186,75 @@ int main() {
     >
     // table
   >(str_adapter, table, table_visited, results);
+  // adapter
+  Metrics<
+    AdapterMetricsTable<
+      string,
+      // keys and values simple type
+      CstringWrapper,
+      // wrapper to use for strings
+      DoubleNode<string>,
+      // node
+      DoubleList<DoubleNode<string>, string>,
+      // list
+      DoubleListWalk<
+       DoubleNode<string>,
+       DoubleList<DoubleNode<string>, string>
+      >,
+      // walk list
+      ByteTableAsList<
+       string,
+       DoubleList<DoubleNode<string>, string >,
+       ByteArray,
+       ByteTable<ByteArray, HashDjb2String<string> >
+      >,
+      ByteTableAsList<
+       string,
+       DoubleList<DoubleNode<string>, string >,
+       ByteArray,
+       ByteTable<ByteArray, HashDjb2String<string> >
+      >
+    >
+  > * metrics = new Metrics<
+    AdapterMetricsTable<
+      string,
+      // keys and values simple type
+      CstringWrapper,
+      // wrapper to use for strings
+      DoubleNode<string>,
+      // node
+      DoubleList<DoubleNode<string>, string>,
+      // list
+      DoubleListWalk<
+       DoubleNode<string>,
+       DoubleList<DoubleNode<string>, string>
+      >,
+      // walk list
+      ByteTableAsList<
+       string,
+       DoubleList<DoubleNode<string>, string >,
+       ByteArray,
+       ByteTable<ByteArray, HashDjb2String<string> >
+      >,
+      ByteTableAsList<
+       string,
+       DoubleList<DoubleNode<string>, string >,
+       ByteArray,
+       ByteTable<ByteArray, HashDjb2String<string> >
+      >
+    >
+  >(adapter);
+  // metrics
   timer->set_sooner(time(NULL));
   importer->import(files, table, file_read);
   timer->set_later(time(NULL));
+  timer->set_difference(difftime(timer->get_later(), timer->get_sooner()));
+  metrics->collect_dataset();
+  metrics->collect_size();
+  while(results->get_head()) {
+    cout<<results->get_head()->key<<" "<<results->get_head()->value<<endl;
+    results->pop_left();
+  }
   delete str;
   delete str_timer;
   delete str_adapter;
@@ -204,5 +270,6 @@ int main() {
   delete importer;
   delete timer;
   delete adapter;
+  delete metrics;
   return 0;
 }
