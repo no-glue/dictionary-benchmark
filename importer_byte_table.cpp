@@ -34,9 +34,18 @@ using namespace std;
 int main() {
   string line;
   getline(cin, line);
-  CstringWrapper * str = new CstringWrapper(), * str_timer = new CstringWrapper();
-  HashDjb2String<string> * hash = new HashDjb2String<string>(), * hash_visited = new HashDjb2String<string>();
+  CstringWrapper * str = new CstringWrapper(), * str_timer = new CstringWrapper(), * str_adapter = new CstringWrapper();
   // str for c strings
+  HashDjb2String<string> * hash = new HashDjb2String<string>(), * hash_visited = new HashDjb2String<string>();
+  // hash
+  DoubleList<
+    DoubleNode<string>, 
+    string
+  > * results = new DoubleList<
+    DoubleNode<string>, 
+    string
+  >();
+  // results
   ByteTable<
     ByteArray,
     HashDjb2String<string>
@@ -137,9 +146,18 @@ int main() {
       DoubleList<DoubleNode<string>, string>
     >,
     // walk list
-    // table -------------------------------
-    ,
-    // table visitied ------------------------------
+    ByteTableAsList<
+      string,
+      DoubleList<DoubleNode<string>, string >,
+      ByteArray,
+      ByteTable<ByteArray, HashDjb2String<string> >
+    >,
+    ByteTableAsList<
+      string,
+      DoubleList<DoubleNode<string>, string >,
+      ByteArray,
+      ByteTable<ByteArray, HashDjb2String<string> >
+    >
   > * adapter = new AdapterMetricsTable<
     string,
     // keys and values simple type
@@ -154,24 +172,17 @@ int main() {
       DoubleList<DoubleNode<string>, string>
     >,
     // walk list
-    HelperWrapper<
+    ByteTableAsList<
       string,
-      DoubleList<DoubleNode<string>, string>,
-      Tokenizer,
-      TokenizerList<
-        string,
-        CstringWrapper,
-        DoubleList<DoubleNode<string>, string>,
-        Tokenizer
-      >,
-      UnqliteWrapper<string>
+      DoubleList<DoubleNode<string>, string >,
+      ByteArray,
+      ByteTable<ByteArray, HashDjb2String<string> >
     >,
-    ChainedHashTable<
-      DoubleNode<string>, 
-      DoubleList<DoubleNode<string>, string>, 
-      HashDjb2String<string>,
-      DoubleListWalk<DoubleNode<string>, DoubleList<DoubleNode<string>, string> >,
-      string
+    ByteTableAsList<
+      string,
+      DoubleList<DoubleNode<string>, string >,
+      ByteArray,
+      ByteTable<ByteArray, HashDjb2String<string> >
     >
     // table
   >(str_adapter, table, table_visited, results);
@@ -180,8 +191,10 @@ int main() {
   timer->set_later(time(NULL));
   delete str;
   delete str_timer;
+  delete str_adapter;
   delete hash;
   delete hash_visited;
+  delete results;
   delete table_base;
   delete table_base_visited;
   delete table;
@@ -190,5 +203,6 @@ int main() {
   delete file_read;
   delete importer;
   delete timer;
+  delete adapter;
   return 0;
 }
