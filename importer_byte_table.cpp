@@ -251,6 +251,10 @@ int main() {
   timer->set_difference(difftime(timer->get_later(), timer->get_sooner()));
   metrics->collect_dataset();
   metrics->collect_size();
+  metrics->collect_nodes();
+  metrics->collect_edges();
+  metrics->collect_density();
+  metrics->collect_average_degree();
   while(results->get_head()) {
     cout<<results->get_head()->key<<" "<<results->get_head()->value<<endl;
     results->pop_left();
