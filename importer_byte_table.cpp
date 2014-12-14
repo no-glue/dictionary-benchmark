@@ -123,6 +123,58 @@ int main() {
     DoubleList<DoubleNode<string>, string>
   >(str_timer);
   // timer
+  AdapterMetricsTable<
+    string,
+    // keys and values simple type
+    CstringWrapper,
+    // wrapper to use for strings
+    DoubleNode<string>,
+    // node
+    DoubleList<DoubleNode<string>, string>,
+    // list
+    DoubleListWalk<
+      DoubleNode<string>,
+      DoubleList<DoubleNode<string>, string>
+    >,
+    // walk list
+    // table -------------------------------
+    ,
+    // table visitied ------------------------------
+  > * adapter = new AdapterMetricsTable<
+    string,
+    // keys and values simple type
+    CstringWrapper,
+    // wrapper to use for strings
+    DoubleNode<string>,
+    // node
+    DoubleList<DoubleNode<string>, string>,
+    // list
+    DoubleListWalk<
+      DoubleNode<string>,
+      DoubleList<DoubleNode<string>, string>
+    >,
+    // walk list
+    HelperWrapper<
+      string,
+      DoubleList<DoubleNode<string>, string>,
+      Tokenizer,
+      TokenizerList<
+        string,
+        CstringWrapper,
+        DoubleList<DoubleNode<string>, string>,
+        Tokenizer
+      >,
+      UnqliteWrapper<string>
+    >,
+    ChainedHashTable<
+      DoubleNode<string>, 
+      DoubleList<DoubleNode<string>, string>, 
+      HashDjb2String<string>,
+      DoubleListWalk<DoubleNode<string>, DoubleList<DoubleNode<string>, string> >,
+      string
+    >
+    // table
+  >(str_adapter, table, table_visited, results);
   timer->set_sooner(time(NULL));
   importer->import(files, table, file_read);
   timer->set_later(time(NULL));
