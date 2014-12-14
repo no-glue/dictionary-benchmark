@@ -35,7 +35,7 @@ int main() {
   string line;
   getline(cin, line);
   CstringWrapper * str = new CstringWrapper(), * str_timer = new CstringWrapper();
-  HashDjb2String<string> * hash = new HashDjb2String<string>();
+  HashDjb2String<string> * hash = new HashDjb2String<string>(), * hash_visited = new HashDjb2String<string>();
   // str for c strings
   ByteTable<
     ByteArray,
@@ -57,6 +57,26 @@ int main() {
     ByteTable<ByteArray, HashDjb2String<string> >
   >(table_base);
   // table
+  ByteTable<
+    ByteArray,
+    HashDjb2String<string>
+  > * table_base_visited = new ByteTable<
+    ByteArray,
+    HashDjb2String<string>
+  >(SIZE, ARRAY_SIZE, hash_visited);
+  // tabe base visited
+  ByteTableAsList<
+    string,
+    DoubleList<DoubleNode<string>, string >,
+    ByteArray,
+    ByteTable<ByteArray, HashDjb2String<string> >
+  > * table_visited = new ByteTableAsList<
+    string,
+    DoubleList<DoubleNode<string>, string >,
+    ByteArray,
+    ByteTable<ByteArray, HashDjb2String<string> >
+  >(table_base_visited);
+  // tabe visited
   GeneratorFile<
     ifstream, string
   > * files = new GeneratorFile<
@@ -109,8 +129,11 @@ int main() {
   delete str;
   delete str_timer;
   delete hash;
+  delete hash_visited;
   delete table_base;
+  delete table_base_visited;
   delete table;
+  delete table_visited;
   delete files;
   delete file_read;
   delete importer;
