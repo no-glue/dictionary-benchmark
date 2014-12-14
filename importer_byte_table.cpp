@@ -1,5 +1,5 @@
 #define SIZE 131072
-#define ARRAY_SIZE 131072
+#define ARRAY_SIZE 524288
 // todo ... switch ... on load, 80% switch table
 
 #include <string>
@@ -252,6 +252,9 @@ int main() {
   metrics->collect_dataset();
   metrics->collect_size();
   timer->collect_difference("indexing(sec)", results);
+  timer->set_sooner(time(NULL));
+  metrics->breadth_first_search();
+  timer->set_later(time(NULL));
   metrics->collect_nodes();
   metrics->collect_edges();
   metrics->collect_density();
