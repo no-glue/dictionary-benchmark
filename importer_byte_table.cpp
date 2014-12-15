@@ -200,7 +200,7 @@ int main() {
   metrics->collect_size();
   timer->collect_difference("indexing(sec)", results);
   timer->set_sooner(time(NULL));
-  // ----------------------------------
+  metrics->breadth_first_search();
   timer->set_later(time(NULL));
   metrics->collect_nodes();
   metrics->collect_edges();
