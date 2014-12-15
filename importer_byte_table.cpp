@@ -17,13 +17,14 @@
 #include "tokenizer.h"
 #include "cstring_wrapper.h"
 #include "double_node.h"
+#include "double_node_simple.h"
 #include "double_list.h"
 #include "hash_djb2_string.h"
 #include "double_list_walk.h"
 #include "decorator_file_read.h"
 #include "generator_file.h"
 #include "importer.h"
-#include "adapter_metrics_table.h"
+#include "adapter_metrics_byte.h"
 #include "metrics.h"
 #include "timer.h"
 #include "writer.h"
@@ -36,7 +37,7 @@ int main() {
   getline(cin, line);
   CstringWrapper * str = new CstringWrapper(), * str_timer = new CstringWrapper(), * str_adapter = new CstringWrapper();
   // str for c strings
-  HashDjb2String<string> * hash = new HashDjb2String<string>(), * hash_visited = new HashDjb2String<string>();
+  HashDjb2String<string> * hash = new HashDjb2String<string>();
   // hash
   DoubleList<
     DoubleNode<string>, 
@@ -66,26 +67,6 @@ int main() {
     ByteTable<ByteArray, HashDjb2String<string> >
   >(table_base);
   // table
-  ByteTable<
-    ByteArray,
-    HashDjb2String<string>
-  > * table_base_visited = new ByteTable<
-    ByteArray,
-    HashDjb2String<string>
-  >(SIZE, ARRAY_SIZE, hash_visited);
-  // tabe base visited
-  ByteTableAsList<
-    string,
-    DoubleList<DoubleNode<string>, string >,
-    ByteArray,
-    ByteTable<ByteArray, HashDjb2String<string> >
-  > * table_visited = new ByteTableAsList<
-    string,
-    DoubleList<DoubleNode<string>, string >,
-    ByteArray,
-    ByteTable<ByteArray, HashDjb2String<string> >
-  >(table_base_visited);
-  // tabe visited
   GeneratorFile<
     ifstream, string
   > * files = new GeneratorFile<
@@ -132,52 +113,34 @@ int main() {
     DoubleList<DoubleNode<string>, string>
   >(str_timer);
   // timer
-  AdapterMetricsTable<
+  AdapterMetricsByte<
     string,
     // keys and values simple type
     CstringWrapper,
     // wrapper to use for strings
     DoubleNode<string>,
     // node
+    DoubleNodeSimple<int>,
     DoubleList<DoubleNode<string>, string>,
     // list
-    DoubleListWalk<
-      DoubleNode<string>,
-      DoubleList<DoubleNode<string>, string>
-    >,
-    // walk list
-    ByteTableAsList<
-      string,
-      DoubleList<DoubleNode<string>, string >,
-      ByteArray,
-      ByteTable<ByteArray, HashDjb2String<string> >
-    >,
+    DoubleList<DoubleNodeSimple<int>, int>,
     ByteTableAsList<
       string,
       DoubleList<DoubleNode<string>, string >,
       ByteArray,
       ByteTable<ByteArray, HashDjb2String<string> >
     >
-  > * adapter = new AdapterMetricsTable<
+  > * adapter = new AdapterMetricsByte<
     string,
     // keys and values simple type
     CstringWrapper,
     // wrapper to use for strings
     DoubleNode<string>,
     // node
+    DoubleNodeSimple<int>,
     DoubleList<DoubleNode<string>, string>,
     // list
-    DoubleListWalk<
-      DoubleNode<string>,
-      DoubleList<DoubleNode<string>, string>
-    >,
-    // walk list
-    ByteTableAsList<
-      string,
-      DoubleList<DoubleNode<string>, string >,
-      ByteArray,
-      ByteTable<ByteArray, HashDjb2String<string> >
-    >,
+    DoubleList<DoubleNodeSimple<int>, int>,
     ByteTableAsList<
       string,
       DoubleList<DoubleNode<string>, string >,
@@ -185,63 +148,47 @@ int main() {
       ByteTable<ByteArray, HashDjb2String<string> >
     >
     // table
-  >(str_adapter, table, table_visited, results);
+  >(str_adapter, table, results);
   // adapter
   Metrics<
-    AdapterMetricsTable<
+    AdapterMetricsByte<
       string,
       // keys and values simple type
       CstringWrapper,
       // wrapper to use for strings
       DoubleNode<string>,
       // node
+      DoubleNodeSimple<int>,
       DoubleList<DoubleNode<string>, string>,
       // list
-      DoubleListWalk<
-       DoubleNode<string>,
-       DoubleList<DoubleNode<string>, string>
-      >,
-      // walk list
+      DoubleList<DoubleNodeSimple<int>, int>,
       ByteTableAsList<
-       string,
-       DoubleList<DoubleNode<string>, string >,
-       ByteArray,
-       ByteTable<ByteArray, HashDjb2String<string> >
-      >,
-      ByteTableAsList<
-       string,
-       DoubleList<DoubleNode<string>, string >,
-       ByteArray,
-       ByteTable<ByteArray, HashDjb2String<string> >
+        string,
+        DoubleList<DoubleNode<string>, string >,
+        ByteArray,
+        ByteTable<ByteArray, HashDjb2String<string> >
       >
+      // table
     >
   > * metrics = new Metrics<
-    AdapterMetricsTable<
+    AdapterMetricsByte<
       string,
       // keys and values simple type
       CstringWrapper,
       // wrapper to use for strings
       DoubleNode<string>,
       // node
+      DoubleNodeSimple<int>,
       DoubleList<DoubleNode<string>, string>,
       // list
-      DoubleListWalk<
-       DoubleNode<string>,
-       DoubleList<DoubleNode<string>, string>
-      >,
-      // walk list
+      DoubleList<DoubleNodeSimple<int>, int>,
       ByteTableAsList<
-       string,
-       DoubleList<DoubleNode<string>, string >,
-       ByteArray,
-       ByteTable<ByteArray, HashDjb2String<string> >
-      >,
-      ByteTableAsList<
-       string,
-       DoubleList<DoubleNode<string>, string >,
-       ByteArray,
-       ByteTable<ByteArray, HashDjb2String<string> >
+        string,
+        DoubleList<DoubleNode<string>, string >,
+        ByteArray,
+        ByteTable<ByteArray, HashDjb2String<string> >
       >
+      // table
     >
   >(adapter);
   // metrics
@@ -253,7 +200,7 @@ int main() {
   metrics->collect_size();
   timer->collect_difference("indexing(sec)", results);
   timer->set_sooner(time(NULL));
-  metrics->breadth_first_search();
+  // ----------------------------------
   timer->set_later(time(NULL));
   metrics->collect_nodes();
   metrics->collect_edges();
@@ -267,12 +214,9 @@ int main() {
   delete str_timer;
   delete str_adapter;
   delete hash;
-  delete hash_visited;
   delete results;
   delete table_base;
-  delete table_base_visited;
   delete table;
-  delete table_visited;
   delete files;
   delete file_read;
   delete importer;
